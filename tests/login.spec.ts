@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
+import { usersCredentials } from '../test-data/users';
 
 test.describe('Login Page', () => {        // agrupa los tests
 
@@ -7,7 +8,7 @@ test.describe('Login Page', () => {        // agrupa los tests
         // 1. ARRANGE — prepara lo que necesitas
         const loginPage = new LoginPage(page);
         // 2. ACT — ejecuta la acción
-        await loginPage.login("standard_user", "secret_sauce");
+        await loginPage.login(usersCredentials.standard.username, usersCredentials.standard.password);
         // 3. ASSERT — verifica el resultado
         await expect(page).toHaveURL(/inventory/);
     });
@@ -17,7 +18,7 @@ test.describe('Login Page', () => {        // agrupa los tests
         // Arrange
         const loginPage = new LoginPage(page);
         // Act
-        await loginPage.login("invalid_user", "wrong_pass");
+        await loginPage.login(usersCredentials.invalid.username, usersCredentials.invalid.password);
         // Assert
         await expect(loginPage.isErrorVisible()).resolves.toBe(true);
 
@@ -30,7 +31,7 @@ test.describe('Login Page', () => {        // agrupa los tests
         // Arrange
         const loginPage = new LoginPage(page);
         // Act
-        await loginPage.login("standard_user", "");
+        await loginPage.login(usersCredentials.noPassword.username, usersCredentials.noPassword.password);
         // Assert
         await expect(loginPage.isErrorVisible()).resolves.toBe(true);
 
